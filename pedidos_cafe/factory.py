@@ -1,4 +1,4 @@
-from pedidos_cafe.base import Espresso, Americano, Latte
+from pedidos_cafe.base import Espresso, Americano, Latte, CafeBase
 from api_patrones.logger import Logger
 
 class CafeFactory:
