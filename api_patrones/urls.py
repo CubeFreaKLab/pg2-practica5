@@ -15,8 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.http import JsonResponse
+
+def api_root(request):
+    """Vista raíz de la API que muestra los endpoints disponibles"""
+    return JsonResponse({
+        "mensaje": "API de Patrones de Diseño - Pedidos de Café",
+        "endpoints": {
+            "admin": "/admin/",
+            "pedidos": "/api/pedidos/",
+            "tipos_cafe": "/api/pedidos/tipos_cafe/",
+            "ingredientes": "/api/pedidos/ingredientes_disponibles/",
+            "tamanios": "/api/pedidos/tamanios_disponibles/",
+            "logs": "/api/pedidos/logs_sistema/",
+            "estadisticas": "/api/pedidos/estadisticas/"
+        },
+        "patrones_implementados": [
+            "Factory Pattern",
+            "Builder Pattern", 
+            "Singleton Pattern"
+        ]
+    })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', api_root, name='api_root'),
+    path('', include('pedidos_cafe.urls')),
 ]

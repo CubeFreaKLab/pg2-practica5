@@ -225,4 +225,30 @@ class PedidoCafeSerializer(serializers.ModelSerializer):
         # Registrar la actualización
         logger = Logger()
         logger.registrar(
-            f"Serializer: Actualizado pedido {pedido.id} para cliente {pe
+            f"Serializer: Actualizado pedido {pedido.id} para cliente {pedido.cliente}"
+        )
+        
+        return pedido
+
+
+class LoggerSerializer(serializers.Serializer):
+    """
+    Serializer para mostrar los logs del sistema.
+    """
+    logs = serializers.ListField(child=serializers.CharField(), read_only=True)
+    total_logs = serializers.IntegerField(read_only=True)
+    ultimo_log = serializers.CharField(read_only=True, allow_null=True)
+
+    def to_representation(self, instance):
+        """
+        Personaliza la representación de los logs.
+        
+        Returns:
+            dict: Representación de los logs
+        """
+        logger = Logger()
+        return {
+            "logs": logger.obtener_logs(),
+            "total_logs": logger.contar_logs(),
+            "ultimo_log": logger.obtener_ultimo_log()
+        }
